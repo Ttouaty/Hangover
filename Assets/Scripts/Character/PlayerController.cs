@@ -12,6 +12,10 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region Input
+	[Header("Inputs")]
+	[SerializeField]
+	[Range(0.3f, 1)]
+	private float _axisActivationThreshold = 0.8f;
 	[SerializeField]
 	[Tooltip("ATTENTION! 3rd input axis not defined in inputManager yet.")]
 	private string[] _possibleInputs = new string[] {
@@ -33,9 +37,6 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private UnityEvent _availableActions;
 
-	[SerializeField]
-	[Range(0.3f, 1)]
-	private float _axisActivationThreshold = 0.8f;
 	private Dictionary<string, int> _activeInputs = new Dictionary<string, int>();
 	#endregion
 
@@ -80,6 +81,7 @@ public class PlayerController : MonoBehaviour
 		_rigidB = GetComponent<Rigidbody>();
 		GenerateRandomInputs();
 		StumbleInterval();
+		CameraManager.Instance.AddTargetToTrack(transform);
 	}
 
 	void Update()
@@ -203,5 +205,34 @@ public class PlayerController : MonoBehaviour
 
 		_drunkSpeed = Vector3.zero;
 		_isStumbling = false;
+	}
+
+
+	public void SpecialAction_Scream() { StartCoroutine(SpecialAction_Scream_Coroutine()); }
+	public void SpecialAction_Dance() { StartCoroutine(SpecialAction_Dance_Coroutine()); }
+	public void SpecialAction_Drink() { StartCoroutine(SpecialAction_Drink_Coroutine()); }
+
+	IEnumerator SpecialAction_Scream_Coroutine()
+	{
+		AllowInput = false;
+		Debug.Log("I AM SCREAMING !!!");
+		yield return new WaitForSeconds(0.5f);
+		AllowInput = true;
+	}
+
+	IEnumerator SpecialAction_Dance_Coroutine()
+	{
+		AllowInput = false;
+		Debug.Log("I am Dancing");
+		yield return new WaitForSeconds(0.5f);
+		AllowInput = true;
+	}
+
+	IEnumerator SpecialAction_Drink_Coroutine()
+	{
+		AllowInput = false;
+		Debug.Log("I am drinking");
+		yield return new WaitForSeconds(0.5f);
+		AllowInput = true;
 	}
 }
