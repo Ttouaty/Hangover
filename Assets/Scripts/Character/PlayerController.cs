@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
 	#region Direction
 	private Vector3 _activeSpeed = Vector3.zero;
+	private Vector3 _drunkSpeed = Vector3.zero;
 	private Vector3 _activeDirection = Vector3.zero;
 	private float _maxSpeed = 3; //Max speed (units / s)
 	#endregion
@@ -48,6 +49,21 @@ public class PlayerController : MonoBehaviour
 	#region States
 	private bool _internalAllowInput = true;
 	private bool _isFrozen = false;
+	private bool _isStumbling = false;
+	#endregion
+
+	#region GamePlay
+	[Header("Drunk Movement")]
+	[SerializeField]
+	private float _minDrunkInterval = 5;
+	[SerializeField]
+	private float _maxDrunkInterval = 20;
+	[SerializeField]
+	private float _stumbleForce = 2;
+	[SerializeField]
+	private float _stumbleTime = 1.5f;
+	[SerializeField]
+	private AnimationCurve _stumbleSpeedCurve;
 	#endregion
 
 	#region Getters
@@ -63,6 +79,7 @@ public class PlayerController : MonoBehaviour
 	{
 		_rigidB = GetComponent<Rigidbody>();
 		GenerateRandomInputs();
+		StumbleInterval();
 	}
 
 	void Update()
@@ -119,11 +136,13 @@ public class PlayerController : MonoBehaviour
 	void ProcessActiveSpeed()
 	{
 		_activeSpeed = _activeDirection * _maxSpeed;
+
+
 		_activeSpeed.y = _rigidB.velocity.y;
+		_rigidB.velocity = _activeSpeed + _drunkSpeed;
+
 
 		transform.LookAt(transform.position + _activeDirection);
-		_rigidB.velocity = _activeSpeed;
-
 		_activeDirection = Vector3.zero;
 	}
 
@@ -147,5 +166,42 @@ public class PlayerController : MonoBehaviour
 		_activeDirection -= Camera.main.transform.forward.ZeroY().normalized;
 	}
 
+	void StumbleInterval()
+	{
+		Debug.Log("Starting stumbling coroutine");
+		StartCoroutine("StumbleCoroutine"); // appel en string pour pouvoir la stopper en string
+	}
 
+	IEnumerator StumbleCoroutine()
+	{
+		float randomTime;
+		while(true)
+		{
+			randomTime = UnityEngine.Random.Range(_minDrunkInterval, _maxDrunkInterval);
+
+			yield return new WaitForSeconds(randomTime);
+			StartCoroutine(ForceStumble());
+		}
+	}
+
+	IEnumerator ForceStumble()
+	{
+		Debug.Log("Forcing stumble");
+
+		Vector3 tempDirection = (Quaternion.AngleAxis(UnityEngine.Random.Range(0, 360), Vector3.up) * (Vector3.right * _stumbleForce));
+
+		_isStumbling = true;
+
+		float eT = 0;
+		while(eT < _stumbleTime)
+		{
+			eT += Time.deltaTime;
+			_drunkSpeed = _stumbleSpeedCurve.Evaluate(eT / _stumbleTime) * tempDirection;
+			_activeSpeed *= 0.5f; // reduce character movement possibility
+			yield return null;
+		}
+
+		_drunkSpeed = Vector3.zero;
+		_isStumbling = false;
+	}
 }
