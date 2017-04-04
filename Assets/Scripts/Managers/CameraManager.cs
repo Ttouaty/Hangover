@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using UnityStandardAssets.ImageEffects;
 
 public enum ShakeStrength
 {
@@ -23,6 +24,10 @@ public class CameraManager : GenericSingleton<CameraManager>
 	private float _shakeTimeLeft = 0;
 	private ShakeStrength _activeShakeStrength;
 
+	public bool PukeMode = false;
+	private VignetteAndChromaticAberration _ChromaAberation;
+ 
+		 
 	private Camera _camera;
 	private Transform _focalPoint; //FocalPoint is the point the camera is looking at, it can move away from the center point.
 	private Transform _centerPoint; //CenterPoint is the base of the camera, the default. It will not move ingame and is used as a anchor for every cameraMovement;
@@ -52,7 +57,7 @@ public class CameraManager : GenericSingleton<CameraManager>
 	protected override void Awake()
 	{
 		_camera = GetComponent<Camera>();
-
+		_ChromaAberation = GetComponent<VignetteAndChromaticAberration>();
 		ReplaceInstance(this);
 
 		base.Awake();
@@ -118,6 +123,18 @@ public class CameraManager : GenericSingleton<CameraManager>
 		}
 
 		ProcessScreenShake();
+
+		if(PukeMode)
+		{
+			_ChromaAberation.chromaticAberration = Time.time.Oscillate(-25, 100, 0.5f);
+
+			Vector3 tempEuler = transform.rotation.eulerAngles;
+			tempEuler.z = Mathf.Cos(Time.time * 0.5f) * 3;
+
+
+			transform.rotation = Quaternion.Euler(tempEuler);
+		}
+
 	}
 
 	private void CleanTargets()

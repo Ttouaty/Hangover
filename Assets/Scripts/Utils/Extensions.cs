@@ -60,6 +60,11 @@ public static class Vector3Extensions
 		return Mathf.Sign(number) * (Mathf.Abs(number) - amount);
 	}
 
+	public static float Oscillate(this float number, float min, float max, float speed = 1)
+	{
+		return Mathf.Lerp(min, max, (Mathf.Cos(number * speed) + 1) / 2);
+	}
+
 	public static float HighestAxis(this Vector3 vect)
 	{
 		return Mathf.Max(Mathf.Abs(vect.x), Mathf.Abs(vect.y), Mathf.Abs(vect.z));

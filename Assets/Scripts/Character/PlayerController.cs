@@ -152,12 +152,12 @@ public class PlayerController : MonoBehaviour
 
 	public void GoRight()
 	{
-		_activeDirection += Camera.main.transform.right;
+		_activeDirection += Camera.main.transform.right.ZeroY().normalized;
 	}
 
 	public void GoLeft()
 	{
-		_activeDirection -= Camera.main.transform.right;
+		_activeDirection -= Camera.main.transform.right.ZeroY().normalized;
 	}
 
 	public void GoUp()

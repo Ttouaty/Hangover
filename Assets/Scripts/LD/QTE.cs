@@ -81,10 +81,11 @@ public class QTE : MonoBehaviour
 				_listenedinputIndex++;
 				if (_listenedinputIndex == TotalRequiredInputs)
 				{
-					Debug.Log("Complete success !");
+					Debug.Log("success !");
 					GetComponent<Animator>().SetTrigger("Return");
 
 					Destroy(this);
+					OnSuccess.Invoke();
 
 					FocusZone.SetActive(false);
 					return;
@@ -97,6 +98,7 @@ public class QTE : MonoBehaviour
 			else
 			{
 				Debug.LogError("Wrong BITCH !");
+				OnFail.Invoke();
 				GenerateRandomRequiredInput();
 			}
 		}
