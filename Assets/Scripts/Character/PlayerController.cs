@@ -164,9 +164,11 @@ public class PlayerController : MonoBehaviour
 
 		if (Mathf.Abs(_rigidB.velocity.x) > 0.1f)
 			_targetScale.x = _rigidB.velocity.x < 0 ? -1 : 1;
+
 		_animator.transform.localScale = Vector3.Lerp(_animator.transform.localScale, _targetScale, 10 * Time.deltaTime);
 
 		_activeDirection = Vector3.zero;
+		transform.rotation = Quaternion.AngleAxis(Camera.main.transform.rotation.eulerAngles.y + 90, Vector3.up);
 	}
 
 	public void GoRight()
