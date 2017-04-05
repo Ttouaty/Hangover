@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
 	#region References
 	private Rigidbody _rigidB;
+	private Animator _animator;
 	#endregion
 
 	#region Input
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour
 	public bool AllowInput
 	{
 		get { return _internalAllowInput && !_isFrozen; }
-		private set { _internalAllowInput = value; }
+		set { _internalAllowInput = value; }
 	}
 
 	#endregion
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour
 	void Start()
 	{
 		_rigidB = GetComponent<Rigidbody>();
+		_animator = GetComponent<Animator>();
 		GenerateRandomInputs();
 		StumbleInterval();
 		CameraManager.Instance.AddTargetToTrack(transform);
@@ -150,12 +152,12 @@ public class PlayerController : MonoBehaviour
 
 	public void GoRight()
 	{
-		_activeDirection += Camera.main.transform.right;
+		_activeDirection += Camera.main.transform.right.ZeroY().normalized;
 	}
 
 	public void GoLeft()
 	{
-		_activeDirection -= Camera.main.transform.right;
+		_activeDirection -= Camera.main.transform.right.ZeroY().normalized;
 	}
 
 	public void GoUp()
@@ -182,7 +184,8 @@ public class PlayerController : MonoBehaviour
 			randomTime = UnityEngine.Random.Range(_minDrunkInterval, _maxDrunkInterval);
 
 			yield return new WaitForSeconds(randomTime);
-			StartCoroutine(ForceStumble());
+			if(AllowInput)
+				StartCoroutine(ForceStumble());
 		}
 	}
 
@@ -232,7 +235,8 @@ public class PlayerController : MonoBehaviour
 	{
 		AllowInput = false;
 		Debug.Log("I am drinking");
-		yield return new WaitForSeconds(0.5f);
+		_animator.SetTrigger("Drink");
+		yield return new WaitForSeconds(1f);
 		AllowInput = true;
 	}
 }
