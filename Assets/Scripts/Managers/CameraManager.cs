@@ -25,6 +25,8 @@ public class CameraManager : GenericSingleton<CameraManager>
 	private ShakeStrength _activeShakeStrength;
 
 	public bool PukeMode = false;
+	public float PukeSpeed = 1;
+	public float PukeIntensity = 3;
 	private VignetteAndChromaticAberration _ChromaAberation;
  
 		 
@@ -40,7 +42,7 @@ public class CameraManager : GenericSingleton<CameraManager>
 
 	private float _distance;
 	private float _verticalOffset;
-
+	[Space()]
 	public float MinDistance = 5;
 	public float Margin = 5;
 	//public float Growth = 0.1f;
@@ -126,13 +128,20 @@ public class CameraManager : GenericSingleton<CameraManager>
 
 		if(PukeMode)
 		{
-			_ChromaAberation.chromaticAberration = Time.time.Oscillate(-25, 100, 0.5f);
+			_ChromaAberation.chromaticAberration = Time.time.Oscillate(-10 * PukeIntensity, 20 * PukeIntensity, PukeSpeed);
 
 			Vector3 tempEuler = transform.rotation.eulerAngles;
-			tempEuler.z = Mathf.Cos(Time.time * 0.5f) * 3;
-
-
+			tempEuler.z = Mathf.Cos(Time.time * PukeSpeed) * PukeIntensity;
+			_camera.fieldOfView = 50 * Time.time.Oscillate(1 - 0.05f * PukeIntensity, 1 + 0.05f * PukeIntensity, PukeSpeed * 0.6f);
 			transform.rotation = Quaternion.Euler(tempEuler);
+		}
+		else
+		{
+			_ChromaAberation.chromaticAberration = 0;
+			Vector3 tempEuler = transform.rotation.eulerAngles;
+			tempEuler.z = 0;
+			transform.rotation = Quaternion.Euler(tempEuler);
+			_camera.fieldOfView = 50;
 		}
 
 	}

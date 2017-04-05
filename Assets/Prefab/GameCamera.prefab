@@ -121,11 +121,11 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 100
   field of view: 50
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -164,11 +164,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 0
-  intensity: 0.388
+  intensity: 0.3
   chromaticAberration: 1.15
   axialAberration: 0.56
-  blur: 0.493
-  blurSpread: 0.553
+  blur: 0.6
+  blurSpread: 0.5
   luminanceDependency: 0.82
   blurDistance: 1.9
   vignetteShader: {fileID: 4800000, guid: 627943dc7a9a74286b70a4f694a0acd5, type: 3}
@@ -212,6 +212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308416ec889499742800314f51706df4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PukeMode: 1
+  PukeSpeed: 1
+  PukeIntensity: 2.5
   IsMoving: 0
   MinDistance: 9
   Margin: 5

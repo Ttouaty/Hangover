@@ -14,6 +14,7 @@ public class AutoFade : MonoBehaviour
 			if (m_Instance == null)
 			{
 				m_Instance = (new GameObject("AutoFade")).AddComponent<AutoFade>();
+				DontDestroyOnLoad(m_Instance);
 			}
 			return m_Instance;
 		}
@@ -113,7 +114,7 @@ public class AutoFade : MonoBehaviour
 		yield return StartCoroutine(waitCoroutine);
 		_quadEveryFramePass = false;
 
-		yield return endCoroutine;
+		yield return StartCoroutine(endCoroutine);
 		m_Fading = false;
 	}
 
@@ -180,6 +181,12 @@ public class AutoFade : MonoBehaviour
 	{
 		Instance.m_Fading = true;
 		yield return Instance.StartCoroutine(Instance.FadeWaitForCoroutine(start, waitforCoroutine, null, aColor));
+	}
+
+	public static IEnumerator StartFade(float start, IEnumerator waitforCoroutine, float end, Color aColor)
+	{
+		Instance.m_Fading = true;
+		yield return Instance.StartCoroutine(Instance.FadeWaitForCoroutine(start, waitforCoroutine, EndFade(0, end, aColor), aColor));
 	}
 
 	public static IEnumerator StartFade(float start, IEnumerator waitforCoroutine, IEnumerator endCoroutine, Color aColor)

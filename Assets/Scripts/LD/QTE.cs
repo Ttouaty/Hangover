@@ -9,7 +9,6 @@ public class QTE : MonoBehaviour
 {
 	public Sprite[] InputSprites;
 	public Color[] AvailableColors;
-	public GameObject FocusZone;
 	public Image TargetImage;
 
 	public int TotalRequiredInputs = 3;
@@ -84,10 +83,8 @@ public class QTE : MonoBehaviour
 					Debug.Log("success !");
 					GetComponent<Animator>().SetTrigger("Return");
 
-					Destroy(this);
 					OnSuccess.Invoke();
-
-					FocusZone.SetActive(false);
+					Destroy(this);
 					return;
 				}
 				_listenedinputNumber = _requiredInputsList[_listenedinputIndex];

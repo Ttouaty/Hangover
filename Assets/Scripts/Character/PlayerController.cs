@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Rigidbody), typeof(Animator))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
 	#region References
@@ -46,12 +46,15 @@ public class PlayerController : MonoBehaviour
 	private Vector3 _drunkSpeed = Vector3.zero;
 	private Vector3 _activeDirection = Vector3.zero;
 	private float _maxSpeed = 3; //Max speed (units / s)
+	private Vector3 _targetScale = Vector3.one;
+
 	#endregion
 
 	#region States
 	private bool _internalAllowInput = true;
 	private bool _isFrozen = false;
 	private bool _isStumbling = false;
+	private bool _isDebugManual = false;
 	#endregion
 
 	#region GamePlay
@@ -80,7 +83,7 @@ public class PlayerController : MonoBehaviour
 	void Start()
 	{
 		_rigidB = GetComponent<Rigidbody>();
-		_animator = GetComponent<Animator>();
+		_animator = GetComponentInChildren<Animator>();
 		GenerateRandomInputs();
 		StumbleInterval();
 		CameraManager.Instance.AddTargetToTrack(transform);
@@ -90,6 +93,12 @@ public class PlayerController : MonoBehaviour
 	{
 		if (AllowInput)
 			ProcessInput();
+
+		if(Input.GetKeyDown("f12"))
+		{
+			_isDebugManual = !_isDebugManual;
+			Debug.LogWarning("debug controls mode => "+_isDebugManual);
+		}
 
 		ProcessActiveSpeed();
 	}
@@ -112,6 +121,14 @@ public class PlayerController : MonoBehaviour
 
 	void ProcessInput()
 	{
+		if(_isDebugManual)
+		{
+			_activeDirection.x = Input.GetAxis("debugHori");
+			_activeDirection.z = Input.GetAxis("debugVerti");
+			return;
+		}
+
+
 		string[] fragString;
 		for (int i = 0; i < _possibleInputs.Length; i++)
 		{
@@ -145,8 +162,10 @@ public class PlayerController : MonoBehaviour
 		_activeSpeed.y = _rigidB.velocity.y;
 		_rigidB.velocity = _activeSpeed + _drunkSpeed;
 
+		if (Mathf.Abs(_rigidB.velocity.x) > 0.1f)
+			_targetScale.x = _rigidB.velocity.x < 0 ? -1 : 1;
+		_animator.transform.localScale = Vector3.Lerp(_animator.transform.localScale, _targetScale, 10 * Time.deltaTime);
 
-		transform.LookAt(transform.position + _activeDirection);
 		_activeDirection = Vector3.zero;
 	}
 
@@ -235,7 +254,7 @@ public class PlayerController : MonoBehaviour
 	{
 		AllowInput = false;
 		Debug.Log("I am drinking");
-		_animator.SetTrigger("Drink");
+		//_animator.SetTrigger("Drink");
 		yield return new WaitForSeconds(1f);
 		AllowInput = true;
 	}
