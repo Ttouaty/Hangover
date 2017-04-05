@@ -688,9 +688,9 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  _minDrunkInterval: 5
-  _maxDrunkInterval: 20
-  _stumbleForce: 2
+  _minDrunkInterval: 3
+  _maxDrunkInterval: 8
+  _stumbleForce: 3
   _stumbleTime: 1.5
   _stumbleSpeedCurve:
     serializedVersion: 2
