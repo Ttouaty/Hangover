@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.Events;
 
+[Serializable]
+public struct PairMatAction
+{
+	public string ActionName;
+	public Material Mat;
+}
+
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
@@ -45,7 +52,7 @@ public class PlayerController : MonoBehaviour
 	private Vector3 _activeSpeed = Vector3.zero;
 	private Vector3 _drunkSpeed = Vector3.zero;
 	private Vector3 _activeDirection = Vector3.zero;
-	private float _maxSpeed = 3; //Max speed (units / s)
+	private float _maxSpeed = 2; //Max speed (units / s)
 	private Vector3 _targetScale = Vector3.one;
 
 	#endregion
@@ -64,22 +71,26 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float _maxDrunkInterval = 20;
 	[SerializeField]
-	private float _stumbleForce = 2;
+	private float _stumbleForce = 1.5f;
 	[SerializeField]
 	private float _stumbleTime = 1.5f;
 	[SerializeField]
 	private AnimationCurve _stumbleSpeedCurve;
 	#endregion
-
+	public PairMatAction[] MatActionPairArray;
+	public Dictionary<string, Material> MatActionDico = new Dictionary<string, Material>();
 	#region Getters
 	public bool AllowInput
 	{
-		get { return _internalAllowInput && !_isFrozen; }
+		get { return _internalAllowInput && !_isFrozen && !_isStumbling; }
 		set { _internalAllowInput = value; }
 	}
 
 	#endregion
 
+	#region Materials
+
+	#endregion
 	void Start()
 	{
 		_rigidB = GetComponent<Rigidbody>();
@@ -87,6 +98,11 @@ public class PlayerController : MonoBehaviour
 		GenerateRandomInputs();
 		StumbleInterval();
 		CameraManager.Instance.AddTargetToTrack(transform);
+
+		for (int i = 0; i < MatActionPairArray.Length; i++)
+		{
+			MatActionDico[MatActionPairArray[i].ActionName] = MatActionPairArray[i].Mat;
+		}
 	}
 
 	void Update()
@@ -128,7 +144,6 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 
-
 		string[] fragString;
 		for (int i = 0; i < _possibleInputs.Length; i++)
 		{
@@ -156,18 +171,21 @@ public class PlayerController : MonoBehaviour
 
 	void ProcessActiveSpeed()
 	{
-		_activeSpeed = _activeDirection * _maxSpeed;
+		_activeSpeed = _activeDirection.normalized * _maxSpeed;
 
 
 		_activeSpeed.y = _rigidB.velocity.y;
 		_rigidB.velocity = _activeSpeed + _drunkSpeed;
 
-		if (Mathf.Abs(_rigidB.velocity.x) > 0.1f)
+		_animator.SetFloat("speedCoef", Mathf.Abs(_rigidB.velocity.ZeroY().magnitude / _maxSpeed));
+
+		if (Mathf.Abs(_rigidB.velocity.x) > 0.1f && !_isStumbling)
 			_targetScale.x = _rigidB.velocity.x < 0 ? -1 : 1;
 
 		_animator.transform.localScale = Vector3.Lerp(_animator.transform.localScale, _targetScale, 10 * Time.deltaTime);
 
 		_activeDirection = Vector3.zero;
+
 		transform.rotation = Quaternion.AngleAxis(Camera.main.transform.rotation.eulerAngles.y + 90, Vector3.up);
 	}
 
@@ -217,15 +235,20 @@ public class PlayerController : MonoBehaviour
 		Vector3 tempDirection = (Quaternion.AngleAxis(UnityEngine.Random.Range(0, 360), Vector3.up) * (Vector3.right * _stumbleForce));
 
 		_isStumbling = true;
+		_animator.SetBool("isStumbling", true);
+		_animator.SetInteger("direction", (int)Mathf.Sign(Vector3.Dot(new Vector3(_animator.transform.localScale.x,0,0), tempDirection.normalized)));
 
 		float eT = 0;
-		while(eT < _stumbleTime)
+		while(eT < _stumbleTime && _internalAllowInput)
 		{
 			eT += Time.deltaTime;
 			_drunkSpeed = _stumbleSpeedCurve.Evaluate(eT / _stumbleTime) * tempDirection;
 			_activeSpeed *= 0.5f; // reduce character movement possibility
 			yield return null;
 		}
+
+		_animator.SetBool("isStumbling", false);
+
 
 		_drunkSpeed = Vector3.zero;
 		_isStumbling = false;

@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013043001750}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.61, z: -12.45}
+  m_LocalPosition: {x: 0, y: 1.504, z: -12.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -214,11 +214,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PukeMode: 1
   PukeSpeed: 1
-  PukeIntensity: 2.5
+  PukeIntensity: 2
   IsMoving: 0
-  MinDistance: 9
+  MinDistance: 7
   Margin: 5
-  VerticalOffsetCoef: -1
+  VerticalOffsetCoef: 0
   TargetsTracked:
   - {fileID: 0}
 --- !u!124 &124000011759784912

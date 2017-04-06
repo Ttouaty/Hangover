@@ -1,18 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
-[RequireComponent(typeof(Collider))]
 public class LDTrigger : MonoBehaviour
 {
+	public UnityEvent OnEnter;
+	public UnityEvent OnExit;
+	public UnityEvent OnStay;
 
-	void Start()
-	{
-
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
+	void OnTriggerEnter() { OnEnter.Invoke(); }
+	void OnTriggerExit() { OnExit.Invoke(); }
+	void OnTriggerStay() { OnStay.Invoke(); }
 }
