@@ -281,9 +281,10 @@ public class PlayerController : MonoBehaviour
 	IEnumerator SpecialAction_Drink_Coroutine()
 	{
 		AllowInput = false;
-		Debug.Log("I am drinking");
-		//_animator.SetTrigger("Drink");
-		yield return new WaitForSeconds(1f);
+		_animator.SetTrigger("Drink");
+		SetActionMat("drink");
+		yield return new WaitForSeconds(2.7f);
+		SetActionMat("idle");
 		AllowInput = true;
 	}
 

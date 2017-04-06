@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 44bb46ef37e4ac04cbadfd91429c710f
+timeCreated: 1491500419
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: backankle
+    100002: backelbow
+    100004: backfoot
+    100006: backhand
+    100008: backknee
+    100010: backleg
+    100012: backshoulder
+    100014: backtoe
+    100016: backwrist
+    100018: belly
+    100020: char8
+    100022: dick1
+    100024: dick2
+    100026: eye
+    100028: eyebrow
+    100030: frontankle
+    100032: frontelbow
+    100034: frontfoot
+    100036: fronthand
+    100038: frontknee
+    100040: frontleg
+    100042: frontshoulder
+    100044: fronttoes
+    100046: frontwrist
+    100048: head
+    100050: hip
+    100052: ikBKarm
+    100054: ikBKfoot
+    100056: ikBKleg
+    100058: ikFRarm
+    100060: ikFRfoot
+    100062: ikFRleg
+    100064: jaw
+    100066: jaw 1
+    100068: neck1
+    100070: neck2
+    100072: //RootNode
+    100074: root
+    100076: spine1
+    100078: spine2
+    100080: spine3
+    100082: spine4
+    100084: tie
+    100086: tie2
+    400000: backankle
+    400002: backelbow
+    400004: backfoot
+    400006: backhand
+    400008: backknee
+    400010: backleg
+    400012: backshoulder
+    400014: backtoe
+    400016: backwrist
+    400018: belly
+    400020: char8
+    400022: dick1
+    400024: dick2
+    400026: eye
+    400028: eyebrow
+    400030: frontankle
+    400032: frontelbow
+    400034: frontfoot
+    400036: fronthand
+    400038: frontknee
+    400040: frontleg
+    400042: frontshoulder
+    400044: fronttoes
+    400046: frontwrist
+    400048: head
+    400050: hip
+    400052: ikBKarm
+    400054: ikBKfoot
+    400056: ikBKleg
+    400058: ikFRarm
+    400060: ikFRfoot
+    400062: ikFRleg
+    400064: jaw
+    400066: jaw 1
+    400068: neck1
+    400070: neck2
+    400072: //RootNode
+    400074: root
+    400076: spine1
+    400078: spine2
+    400080: spine3
+    400082: spine4
+    400084: tie
+    400086: tie2
+    4300000: char8
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: char8
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

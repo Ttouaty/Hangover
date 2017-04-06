@@ -95,6 +95,7 @@ public class QTE : MonoBehaviour
 			else
 			{
 				Debug.LogError("Wrong BITCH !");
+				enabled = false;
 				OnFail.Invoke();
 				GenerateRandomRequiredInput();
 			}
