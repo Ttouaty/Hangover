@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GameManager : GenericSingleton<GameManager>
 {
 	public GameObject CreditPanel;
-	public bool IsInGame = false;
+	//public bool IsInGame = false;
 
 	public Animator PauseAnimator;
 	public bool PauseIsActive = false;
@@ -17,42 +17,6 @@ public class GameManager : GenericSingleton<GameManager>
 	{
 		DontDestroyOnLoad(gameObject);
 	}
-
-	void Update()
-	{
-		if(IsInGame)
-		{
-			if (PauseAnimator != null && CanPause)
-			{
-
-				if (InputManager.GetButtonDown(InputEnum.Start))
-				{
-					if (PauseIsActive)
-					{
-						PauseAnimator.SetTrigger("Return");
-					}
-					else
-					{
-						PauseAnimator.SetTrigger("Enter");
-					}
-					PauseIsActive = !PauseIsActive;
-				}
-
-				if (PauseIsActive)
-				{
-					if (InputManager.GetButtonDown(InputEnum.Select))
-					{
-						PauseIsActive = !PauseIsActive;
-						CanPause = false;
-						LoadScene("SceneMenu");
-					}
-				}
-			}
-			else
-				PauseAnimator = FindObjectOfType<Iphone>().GetComponent<Animator>();
-		}
-	}
-
 
 	public void BringUpCredits()
 	{
@@ -70,7 +34,7 @@ public class GameManager : GenericSingleton<GameManager>
 	{
 		CanPause = true;
 		LoadScene("SceneProto");
-		IsInGame = true;
+		//IsInGame = true;
 	}
 
 	public void LoadScene(string sceneName)
@@ -89,5 +53,14 @@ public class GameManager : GenericSingleton<GameManager>
 	public void ExitGame()
 	{
 		Application.Quit();
+	}
+
+	public void WinGame()
+	{
+		CameraManager.Instance.GetComponent<Animator>().SetTrigger("Win");
+		PlayerController variableDebile = FindObjectOfType<PlayerController>();
+		variableDebile.AllowInput = false;
+		variableDebile.StopAllCoroutines();
+		variableDebile.GetComponentInChildren<Animator>().SetTrigger("Win");
 	}
 }

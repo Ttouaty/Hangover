@@ -19,7 +19,7 @@ public enum ShakeStrength
 
 public class CameraManager : GenericSingleton<CameraManager>
 {
-	public static bool IsManual = false;
+	public bool IsManual = false;
 
 	private float _shakeTimeLeft = 0;
 	private ShakeStrength _activeShakeStrength;
@@ -97,6 +97,7 @@ public class CameraManager : GenericSingleton<CameraManager>
 		_centerPoint = _focalPoint.parent;
 	}
 
+
 	Vector3 previousPosition;
 	void Update()
 	{
@@ -104,7 +105,6 @@ public class CameraManager : GenericSingleton<CameraManager>
 
 		IsMoving = (transform.position - previousPosition).magnitude > 0.05f;
 		previousPosition = transform.position;
-
 
 		if(!IsManual)
 		{
