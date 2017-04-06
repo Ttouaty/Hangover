@@ -19,7 +19,7 @@ public class SelectOnInput : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetAxisRaw("1") != 0 && !_usingGamepad)
+		if (Input.GetAxisRaw("2") != 0 && !_usingGamepad)
 		{
 			eventSystem.SetSelectedGameObject(selectedObject);
 			_usingGamepad = true;

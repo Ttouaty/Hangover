@@ -121,8 +121,8 @@ public class CameraManager : GenericSingleton<CameraManager>
 			}
 
 			transform.localPosition = -Vector3.forward * _distance;
-			FollowCentroid();
 		}
+		FollowCentroid();
 
 		ProcessScreenShake();
 

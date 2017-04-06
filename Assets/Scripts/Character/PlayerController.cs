@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
 	#region Getters
 	public bool AllowInput
 	{
-		get { return _internalAllowInput && !_isFrozen && !_isStumbling; }
+		get { return _internalAllowInput && !_isFrozen; }
 		set { _internalAllowInput = value; }
 	}
 
@@ -91,14 +91,14 @@ public class PlayerController : MonoBehaviour
 	#region Materials
 
 	#endregion
-	void Start()
+	void Awake()
 	{
 		_rigidB = GetComponent<Rigidbody>();
 		_animator = GetComponentInChildren<Animator>();
 		GenerateRandomInputs();
 		StumbleInterval();
 		CameraManager.Instance.AddTargetToTrack(transform);
-
+		
 		for (int i = 0; i < MatActionPairArray.Length; i++)
 		{
 			MatActionDico[MatActionPairArray[i].ActionName] = MatActionPairArray[i].Mat;
@@ -228,11 +228,14 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	IEnumerator ForceStumble()
+	IEnumerator ForceStumble( Vector3 direction = default(Vector3))
 	{
 		Debug.Log("Forcing stumble");
 
 		Vector3 tempDirection = (Quaternion.AngleAxis(UnityEngine.Random.Range(0, 360), Vector3.up) * (Vector3.right * _stumbleForce));
+
+		if (direction.magnitude != 0)
+			tempDirection = direction;
 
 		_isStumbling = true;
 		_animator.SetBool("isStumbling", true);
@@ -282,5 +285,28 @@ public class PlayerController : MonoBehaviour
 		//_animator.SetTrigger("Drink");
 		yield return new WaitForSeconds(1f);
 		AllowInput = true;
+	}
+
+	public void SetActionMat(string actionName)
+	{
+		actionName = actionName.ToLower();
+		if (MatActionDico.ContainsKey(actionName))
+		{
+			GetComponentInChildren<SkinnedMeshRenderer>().material = MatActionDico[actionName];
+		}
+		else
+		{
+			Debug.LogError("No action found with name =>"+actionName);
+		}
+	}
+
+	public void MakeTumble(Transform target)
+	{
+		StartCoroutine(ForceStumble((target.position - transform.position)));
+	}
+
+	public void SetPos(Transform target)
+	{
+		transform.position = target.position;
 	}
 }

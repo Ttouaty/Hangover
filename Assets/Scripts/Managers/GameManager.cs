@@ -9,7 +9,6 @@ public class GameManager : GenericSingleton<GameManager>
 	public GameObject CreditPanel;
 	//public bool IsInGame = false;
 
-	public Animator PauseAnimator;
 	public bool PauseIsActive = false;
 	public bool CanPause = false;
 
@@ -62,5 +61,13 @@ public class GameManager : GenericSingleton<GameManager>
 		variableDebile.AllowInput = false;
 		variableDebile.StopAllCoroutines();
 		variableDebile.GetComponentInChildren<Animator>().SetTrigger("Win");
+	}
+
+	IEnumerator WaitForStart()
+	{
+		yield return new WaitUntil(() => InputManager.GetButtonDown(InputEnum.Start));
+		PauseIsActive = false;
+		CanPause = false;
+		LoadScene("SceneMenu");
 	}
 }
