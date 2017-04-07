@@ -1500,6 +1500,8 @@ MonoBehaviour:
     Mat: {fileID: 2100000, guid: 1804dd810214add4db4bdd4ce7db2ea6, type: 2}
   - ActionName: drink
     Mat: {fileID: 2100000, guid: 0127fc2a118dfa84ea2bd9b194ccfa7f, type: 2}
+  - ActionName: keys
+    Mat: {fileID: 2100000, guid: 4f95ce37c02663d4eb0d9ffe01fab209, type: 2}
 --- !u!136 &136000010057108662
 CapsuleCollider:
   m_ObjectHideFlags: 1

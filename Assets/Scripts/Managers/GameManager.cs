@@ -60,7 +60,9 @@ public class GameManager : GenericSingleton<GameManager>
 		PlayerController variableDebile = FindObjectOfType<PlayerController>();
 		variableDebile.AllowInput = false;
 		variableDebile.StopAllCoroutines();
+		variableDebile.SetActionMat("keys");
 		variableDebile.GetComponentInChildren<Animator>().SetTrigger("Win");
+		StartCoroutine(WaitForStart());
 	}
 
 	IEnumerator WaitForStart()
